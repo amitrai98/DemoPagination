@@ -2,6 +2,8 @@ package android.com.demopagination;
 
 
 import android.app.ProgressDialog;
+import android.com.demopagination.ApiListeners.ApiListener;
+import android.com.demopagination.backend.ApiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -102,6 +104,17 @@ public class MainActivity extends AppCompatActivity {
                     list_items.add(new ItemBean("url"+i, "descirption "+i));
                 }
                 try {
+                    new ApiManager().getQuestions(MainActivity.this, "10", new ApiListener() {
+                        @Override
+                        public void onCallSuccess() {
+                            Log.e(TAG, "Success");
+                        }
+
+                        @Override
+                        public void onError() {
+                            Log.e(TAG, "error");
+                        }
+                    });
                     showProgress(true);
                     Thread.sleep(2000);
                     showProgress(false);
