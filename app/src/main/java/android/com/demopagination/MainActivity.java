@@ -132,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(show && pd != null && !pd.isShowing())
-                    pd.show();
-                else if(!show && pd != null && pd.isShowing()){
-                    pd.dismiss();
-                    adapter.notifyDataSetChanged();
-                    loading = true;
-                }
+//                if(show && pd != null && !pd.isShowing())
+//                    pd.show();
+//                else if(!show && pd != null && pd.isShowing()){
+//                    pd.dismiss();
+//                    adapter.notifyDataSetChanged();
+//                    loading = true;
+//                }
             }
         });
     }
