@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadData(){
-        pd.setMessage("loading data please wait");
+        pd.setMessage("loading next 10 questions.");
         if(pd != null && !pd.isShowing())
             pd.show();
         new Thread(new Runnable() {
