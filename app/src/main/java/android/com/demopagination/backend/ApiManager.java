@@ -20,30 +20,7 @@ public class ApiManager {
 
     private String TAG = getClass().getSimpleName();
 
-    public void getQuestions(Context context, String page_no, ApiListener listener){
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(Constants.BASE_URL)
-//                .build();
-//        try {
-//            StakApiService service = retrofit.create(StakApiService.class);
-//            retrofit2.Call<QuesitonBean> response =
-//                    service.listRepos("10",Constants.ORDER, Constants.SORT, Constants.SITE);
-//
-//
-//            response.enqueue(new Callback<QuesitonBean>() {
-//                @Override
-//                public void onResponse(Call<QuesitonBean> call, Response<QuesitonBean> response) {
-//                    Log.e(TAG, "success");
-//                }
-//
-//                @Override
-//                public void onFailure(Call<QuesitonBean> call, Throwable t) {
-//                    Log.e(TAG, "error");
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+    public void getQuestions(Context context, String page_no, final ApiListener listener){
 
         if(context != null && listener != null){
             try {
@@ -59,6 +36,8 @@ public class ApiManager {
                     @Override
                     public void onResponse(Response<QuesitonBean> response, Retrofit retrofit) {
                         Log.e(TAG, "success");
+                        QuesitonBean result = response.body();
+                        listener.onCallSuccess(result);
                     }
 
                     @Override

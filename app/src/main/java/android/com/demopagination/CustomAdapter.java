@@ -1,5 +1,6 @@
 package android.com.demopagination;
 
+import android.com.demopagination.bean.Item;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,10 +18,10 @@ import java.util.List;
  */
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView>{
 
-    private List<ItemBean> list_items ;
+    private List<Item> list_items ;
     private Context context;
 
-    public CustomAdapter(Context context, List<ItemBean> list_items){
+    public CustomAdapter(Context context, List<Item> list_items){
         this.list_items = list_items;
         this.context = context;
     }
@@ -35,8 +36,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     @Override
     public void onBindViewHolder(CustomView holder, int position) {
-        holder.txtDescription.setText(list_items.get(position).description);
-        Glide.with(context).load(list_items.get(position).getImg_url()).into(holder.imgView);
+        holder.txtDescription.setText(list_items.get(position).getTitle());
+        Glide.with(context).load(list_items.get(position).getOwner().getProfileImage()).into(holder.imgView);
     }
 
     @Override

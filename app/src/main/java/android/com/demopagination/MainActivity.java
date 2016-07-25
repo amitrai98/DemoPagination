@@ -4,6 +4,8 @@ package android.com.demopagination;
 import android.app.ProgressDialog;
 import android.com.demopagination.ApiListeners.ApiListener;
 import android.com.demopagination.backend.ApiManager;
+import android.com.demopagination.bean.Item;
+import android.com.demopagination.bean.QuesitonBean;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView = null;
     private CustomAdapter adapter = null;
-    private List<ItemBean> list_items = new ArrayList<>();
+    private List<Item> list_items = new ArrayList<>();
     private int firstVisibleItem;
     private int totalItemCount;
     private int visibleItemCount;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
+        loadData();
     }
 
     /**
@@ -50,9 +53,6 @@ public class MainActivity extends AppCompatActivity {
         pd = new ProgressDialog(this);
         pd.setMessage("please wait while fetching data.");
 
-        for (int i=0; i<10; i++){
-            list_items.add(new ItemBean("url"+i, "descirption "+i));
-        }
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -97,21 +97,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void loadData(){
+        pd.setMessage("loading data please wait");
+        if(pd != null && !pd.isShowing())
+            pd.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 for (int i = lastcount; i<lastcount+threshold; i++){
-                    list_items.add(new ItemBean("url"+i, "descirption "+i));
                 }
                 try {
                     new ApiManager().getQuestions(MainActivity.this, "10", new ApiListener() {
                         @Override
-                        public void onCallSuccess() {
-                            Log.e(TAG, "Success");
+                        public void onCallSuccess(QuesitonBean quesitonBean) {
+                            if(pd != null && pd.isShowing())
+                                pd.dismiss();
+                            Log.e(TAG, "Success"+quesitonBean.getItems().size());
+                            for (int i = 0; i < quesitonBean.getItems().size(); i++) {
+                                list_items.add(quesitonBean.getItems().get(i));
+                                adapter.notifyDataSetChanged();
+                                loading = true;
+                            }
                         }
 
                         @Override
                         public void onError() {
+                            if(pd != null && pd.isShowing())
+                                pd.dismiss();
+
+                            loading = true;
                             Log.e(TAG, "error");
                         }
                     });
